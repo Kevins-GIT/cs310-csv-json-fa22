@@ -3,6 +3,7 @@ package edu.jsu.mcis.cs310;
 import java.io.*;
 import java.util.*;
 import com.opencsv.*;
+import com.opencsv.exceptions.CsvException;
 import org.json.simple.*;
 import org.json.simple.parser.*;
 
@@ -72,6 +73,17 @@ public class Converter {
             
             /* INSERT YOUR CODE HERE */
             
+            StringBuilder json = new StringBuilder();
+            JSONObject jsonObject = new JSONObject();
+            JSONArray colHeaders = new JSONArray();
+            JSONArray rowHeaders = new JSONArray();
+            JSONArray data = new JSONArray();
+            
+            JSONArray rHeaders = new JSONArray();
+            JSONArray cHeaders = new JSONArray();
+            //JSONArray data = new JSONArray();
+            String[] rows;
+            
         }
         catch(Exception e) { e.printStackTrace(); }
         
@@ -94,6 +106,12 @@ public class Converter {
             CSVWriter csvWriter = new CSVWriter(writer, ',', '"', '\\', "\n");
             
             /* INSERT YOUR CODE HERE */
+            //forEach but something else
+            JSONObject jsonObject = (JSONObject)parser.parse(jsonString);
+            
+            results = jsonObject.toString();
+            //referencejsonObject later
+            System.out.print(results);
             
         }
         catch(Exception e) { e.printStackTrace(); }

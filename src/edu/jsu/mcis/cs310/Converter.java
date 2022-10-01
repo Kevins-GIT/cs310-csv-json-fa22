@@ -72,23 +72,19 @@ public class Converter {
             Iterator<String[]> iterator = full.iterator();
             
             /* INSERT YOUR CODE HERE */
-            
-            
+            //Create JSONObject and ste up arrays for headers and data
             JSONObject jsonObject = new JSONObject();
             String[] headerData = iterator.next();
             JSONArray colHeaders = new JSONArray();
             JSONArray rowHeaders = new JSONArray();
             JSONArray data = new JSONArray();
-            
-            JSONArray rHeaders = new JSONArray();
-            JSONArray cHeaders = new JSONArray();
-            //JSONArray data = new JSONArray();
             String[] rows;
             
             for(String headerData2 : headerData){
-                colHeaders.add(headerData2);
+                colHeaders.add(headerData2); //adds column header 
             }
             
+            //goes through the data multiple times until it gets to the end of the last iteration
             while(iterator.hasNext()){
                 rows = iterator.next();
                 JSONArray list = new JSONArray();
@@ -99,16 +95,18 @@ public class Converter {
                 data.add(list);
             }
             
+            //puts the output together so that it is formatted the way the tests expects
             jsonObject.put("colHeaders", colHeaders);
             jsonObject.put("rowHeaders", rowHeaders);
             jsonObject.put("data", data);
+            
+            //I forgot to use .toJSONString to convert csv to JSON or the rest of the tests won't pass
+            results = JSONValue.toJSONString(jsonObject);
         }
         catch(Exception e) { e.printStackTrace(); }
         
-        // Return JSON String
-        
+        //returns JSON String
         return results.trim();
-        
     }
     
     public static String jsonToCsv(String jsonString) {
@@ -124,12 +122,13 @@ public class Converter {
             CSVWriter csvWriter = new CSVWriter(writer, ',', '"', '\\', "\n");
             
             /* INSERT YOUR CODE HERE */
+            //Creating JSONObject and setting up JSONArray
             JSONObject jsonObject = (JSONObject)parser.parse(jsonString);
             JSONArray colHeaders = (JSONArray)jsonObject.get("colHeaders");
             JSONArray rowHeaders = (JSONArray)jsonObject.get("rowHeaders");
             JSONArray data = (JSONArray)jsonObject.get("data");
-            
             String[] header = new String[colHeaders.size()];
+            
             for(int i = 0; i < colHeaders.size(); i++){
                 header[i] = (String) colHeaders.get(i);
             }
@@ -143,15 +142,16 @@ public class Converter {
                 for(int j = 0; j < dataArray.size(); j++){
                     rows[j + 1] = Long.toString((long)dataArray.get(j));
                 }
+                //each time it goes through an outer for loop, it writes a new line u til git gets through the data size
                 csvWriter.writeNext(rows);
             }
+            //converts the data to string to fit the tests' expected outputs
             results = writer.toString();
             
         }
         catch(Exception e) { e.printStackTrace(); }
         
         // Return CSV String
-        
         return results.trim();
         
     }
